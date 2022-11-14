@@ -49,3 +49,12 @@ class Input {
         }
     }
 }
+
+class Gate {
+    constructor(inputCount, outputCount) {
+        this.inputs = []; 
+        this.outputs = [];
+    }
+
+    
+}
