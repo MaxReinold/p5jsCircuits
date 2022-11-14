@@ -1,45 +1,33 @@
-let andGate = new Gate(200, 400, 2, 1);
-andGate.logic = ([a, andGate]) => [a && andGate];
-let notGate = new Gate(500, 400, 1, 1);
-notGate.logic = ([a]) => [!a];
-let cordba = new Cord(100, 400, 0, 0);
-let cordbb = new Cord(100, 500, 0, 0);
-let i1 = new Input(100, 350);
-let i2 = new Input(100, 500);
-let outputCord = new Cord(0, 0, 1400, 400);
-let intermediateCord = new Cord(0, 0, 0, 0);
-
-connect(andGate, intermediateCord, 0, true);
-connect(intermediateCord, notGate, 0, false);
-connect(notGate, outputCord, 0, true);
-
-
-connect(i1, cordba, 0);
-connect(i2, cordbb, 0);
-connect(cordba, andGate, 0);
-connect(cordbb, andGate, 1);
+let current = new Workspace();
 
 function setup() {
     createCanvas(1500, 1000);
+    current.addInput();
+    current.addInput();
+    current.addComponent(new Gate(600, 500, 2, 1));
+    current.components[2].logic = function(inputs) {
+        return [inputs[0] || inputs[1]];
+    }
+    current.addComponent(new Cord(0, 0, 0, 0));
+    connect(current.components[0], current.components[3], 0, false);
+    connect(current.components[3], current.components[2], 0, false);
+    current.addComponent(new Cord(0, 0, 0, 0));
+    connect(current.components[1], current.components[4], 1, false);
+    connect(current.components[4], current.components[2], 1, false);
 }
 
 function draw() {
     background(40);
-    andGate.draw();
-    i1.draw();
-    cordba.draw();
-    cordbb.draw();
-    i2.draw();
-    outputCord.draw();
-    notGate.draw();
-    intermediateCord.draw();
+    push();
+    //draw outline around canvas 100 pixels in
+    stroke(255);
+    strokeWeight(5);
+    noFill();
+    rect(100, 40, width - 200, height - 100);
+    pop();
+    current.draw();
 }
 
 function mouseClicked() {
-    i1.validateClick(
-        new p5.Vector(mouseX, mouseY)
-    );
-    i2.validateClick(
-        new p5.Vector(mouseX, mouseY)
-    );
+    current.handleClick();
 }

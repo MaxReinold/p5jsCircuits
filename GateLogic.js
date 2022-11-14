@@ -46,6 +46,10 @@ class Gate {
         return new p5.Vector(this.pos.x + this.width, this.pos.y + index*30 + 15 + yOffset);
     }
 
+    handleClick() {
+
+    }
+
     logic() { 
         //override this
     }

@@ -48,6 +48,10 @@ class Cord {
             this.output(this.powered);
         }
     }
+
+    handleClick() {
+
+    }
 }
 
 class Input {
@@ -72,12 +76,16 @@ class Input {
     }
 
     validateClick(location) {
-        if(location.dist(this.pos) < 1.5 * 10) {
-            this.toggle();
-        }
+        return location.dist(this.pos) < 1.5 * 10; 
     }
 
     toggle() {
         this.powered = !this.powered;
+    }
+    
+    handleClick() {
+        if(this.validateClick(new p5.Vector(mouseX, mouseY))) {
+            this.toggle();
+        }
     }
 }
